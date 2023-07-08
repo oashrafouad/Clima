@@ -12,7 +12,6 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
         searchTextField.delegate = self
         // While editing, show the Clear button in the text field
 //        searchTextField.clearButtonMode = .whileEditing
-        
     }
 
     @IBAction func searchPressed(_ sender: UIButton) {
@@ -23,6 +22,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
         searchTextField.endEditing(true)
     }
     
+    // This function dismisses keyboard when return (go) button is pressed
     // textField here refers to the text field that activates (calls) the function, so this can be linked to multiple text fields but they all must have their delegate set to self
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
@@ -31,20 +31,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     
     // Clear the text field when it ends editing
     func textFieldDidEndEditing(_ textField: UITextField) {
-        // Check weather for textField.text
+        // TODO: Check weather for textField.text
         textField.text = ""
-    }
-    
-    // Determine when the text field should be allowed to end editing (this check is executed whenever textField.endEditing is called
-    // Will be allowed only if the user entered a value
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField.text != ""
-        {
-            return true
-        }
-        else
-        {
-            return false
-        }
     }
 }
