@@ -1,14 +1,6 @@
-//
-//  ViewController.swift
-//  Clima
-//
-//  Created by Angela Yu on 01/09/2019.
-//  Copyright © 2019 App Brewery. All rights reserved.
-//
-
 import UIKit
 
-class WeatherViewController: UIViewController {
+class WeatherViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
@@ -17,13 +9,42 @@ class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchTextField.delegate = self
+        // While editing, show the Clear button in the text field
+//        searchTextField.clearButtonMode = .whileEditing
         
     }
 
     @IBAction func searchPressed(_ sender: UIButton) {
         searchTextField.endEditing(true)
-        print(searchTextField.text!)
     }
-
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        searchTextField.endEditing(true)
+    }
+    
+    // textField here refers to the text field that activates (calls) the function, so this can be linked to multiple text fields but they all must have their delegate set to self
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
+        return true
+    }
+    
+    // Clear the text field when it ends editing
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        // Check weather for textField.text
+        textField.text = ""
+    }
+    
+    // Determine when the text field should be allowed to end editing (this check is executed whenever textField.endEditing is called
+    // Will be allowed only if the user entered a value
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField.text != ""
+        {
+            return true
+        }
+        else
+        {
+            return false
+        }
+    }
 }
-
