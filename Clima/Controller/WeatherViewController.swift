@@ -1,17 +1,18 @@
 import UIKit
 
-class WeatherViewController: UIViewController, UITextFieldDelegate {
-
+class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManagerDelegate {
+        
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var searchTextField: UITextField!
     
-    let weatherManager = WeatherManager()
+    var weatherManager = WeatherManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTextField.delegate = self
+        weatherManager.delegate = self
         // While editing, show the Clear button in the text field
 //        searchTextField.clearButtonMode = .whileEditing
     }
@@ -38,5 +39,15 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
             weatherManager.fetchWeather(cityName: city)
         }
         textField.text = ""
+    }
+    
+    func weatherDidUpdate(_ weatherManager: WeatherManager, weather: WeatherModel)
+    {
+        print(weather.cityName)
+        print(weather.temperature)
+    }
+    
+    func didFailWithError(_ weatherManager: WeatherManager, _ error: Error) {
+        print(error)
     }
 }
