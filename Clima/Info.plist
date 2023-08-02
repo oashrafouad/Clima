@@ -52,7 +52,7 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>API_KEY</key>
-	<string></string>
+	<string>***REMOVED***</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

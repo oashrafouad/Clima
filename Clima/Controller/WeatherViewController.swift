@@ -1,7 +1,7 @@
 import UIKit
 
 class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManagerDelegate {
-        
+    
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
@@ -14,9 +14,9 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
         searchTextField.delegate = self
         weatherManager.delegate = self
         // While editing, show the Clear button in the text field
-//        searchTextField.clearButtonMode = .whileEditing
+        //        searchTextField.clearButtonMode = .whileEditing
     }
-
+    
     @IBAction func searchPressed(_ sender: UIButton) {
         searchTextField.endEditing(true)
     }
@@ -45,9 +45,25 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
     {
         print(weather.cityName)
         print(weather.temperature)
+
+        DispatchQueue.main.async() {
+            let animationTime = 0.5
+            // Added animations
+            UIView.transition(with: self.temperatureLabel, duration: animationTime, options: .transitionCrossDissolve) {
+                self.temperatureLabel.text = weather.temperatureString
+            }
+            
+            UIView.transition(with: self.cityLabel, duration: animationTime, options: .transitionCrossDissolve) {
+                self.cityLabel.text = weather.cityName
+            }
+            
+            UIView.transition(with: self.conditionImageView, duration: animationTime, options: .transitionCrossDissolve) {
+                self.conditionImageView.image = UIImage(systemName: weather.conditionName)
+            }
+        }
     }
-    
-    func didFailWithError(_ weatherManager: WeatherManager, _ error: Error) {
-        print(error)
+        
+        func didFailWithError(_ weatherManager: WeatherManager, _ error: Error) {
+            print(error)
+        }
     }
-}

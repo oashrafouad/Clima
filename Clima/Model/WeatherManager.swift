@@ -16,7 +16,6 @@ struct WeatherManager
     {
         let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY")
         let urlString = "\(weatherUrl)&appid=\(apiKey!)&q=\(cityName)"
-        print(urlString)
         performRequest(with: urlString)
     }
     
@@ -43,10 +42,8 @@ struct WeatherManager
                     if let weather = parseJSON(safeData)
                     {
                         delegate?.weatherDidUpdate(self, weather: weather)
-                        
                     }
                 }
-                
             })
             
             // 4. Start the task
@@ -65,11 +62,6 @@ struct WeatherManager
             let name = decodedData.name
             
             let weather = WeatherModel(conditionId: id, cityName: name, temperature: temp)
-            
-//            let iconName = weather.conditionName
-//            print(iconName)
-//            print(weather.temperature)
-//            print(weather.temperatureString)
             return weather
             
         }

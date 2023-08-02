@@ -42,7 +42,7 @@ struct WeatherModel
         case 802...804:
             return "cloud"
         default:
-            return "sun.max"
+            return "cloud"
         }
     }
 }
