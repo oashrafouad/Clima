@@ -17,8 +17,8 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         searchTextField.delegate = self
         weatherManager.delegate = self
-//        // While editing, show the Clear button in the text field
-//        searchTextField.clearButtonMode = .whileEditing
+        // While editing, show the Clear button in the text field
+        searchTextField.clearButtonMode = .whileEditing
     }
 }
 
