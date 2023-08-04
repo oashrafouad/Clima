@@ -1,6 +1,6 @@
 import UIKit
 
-class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManagerDelegate {
+class WeatherViewController: UIViewController {
     
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
@@ -9,18 +9,23 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
     
     var weatherManager = WeatherManager()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        searchTextField.delegate = self
-        weatherManager.delegate = self
-        // While editing, show the Clear button in the text field
-        //        searchTextField.clearButtonMode = .whileEditing
-    }
-    
     @IBAction func searchPressed(_ sender: UIButton) {
         searchTextField.endEditing(true)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        searchTextField.delegate = self
+        weatherManager.delegate = self
+//        // While editing, show the Clear button in the text field
+//        searchTextField.clearButtonMode = .whileEditing
+    }
+}
+
+//MARK: - UITextFieldDelegate
+
+extension WeatherViewController: UITextFieldDelegate
+{
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         searchTextField.endEditing(true)
     }
@@ -40,12 +45,14 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
         }
         textField.text = ""
     }
-    
+}
+
+//MARK: - WeatherManagerDelegate
+
+extension WeatherViewController: WeatherManagerDelegate
+{
     func weatherDidUpdate(_ weatherManager: WeatherManager, weather: WeatherModel)
     {
-        print(weather.cityName)
-        print(weather.temperature)
-
         DispatchQueue.main.async() {
             let animationTime = 0.5
             // Added animations
@@ -62,8 +69,8 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
             }
         }
     }
-        
-        func didFailWithError(_ weatherManager: WeatherManager, _ error: Error) {
-            print(error)
-        }
+    
+    func didFailWithError(_ weatherManager: WeatherManager, _ error: Error) {
+        print(error)
     }
+}
