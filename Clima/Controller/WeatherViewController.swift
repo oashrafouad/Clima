@@ -1,4 +1,5 @@
 import UIKit
+import CoreLocation
 
 class WeatherViewController: UIViewController {
     
@@ -8,17 +9,24 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var searchTextField: UITextField!
     
     var weatherManager = WeatherManager()
-    
-    @IBAction func searchPressed(_ sender: UIButton) {
-        searchTextField.endEditing(true)
-    }
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = 5000
+        locationManager.requestLocation()
+        
         searchTextField.delegate = self
         weatherManager.delegate = self
+        
         // While editing, show the Clear button in the text field
         searchTextField.clearButtonMode = .whileEditing
+    }
+    
+    @IBAction func locationPressed(_ sender: UIButton) {
+        locationManager.requestLocation()
     }
 }
 
@@ -26,6 +34,10 @@ class WeatherViewController: UIViewController {
 
 extension WeatherViewController: UITextFieldDelegate
 {
+    @IBAction func searchPressed(_ sender: UIButton) {
+        searchTextField.endEditing(true)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         searchTextField.endEditing(true)
     }
@@ -71,6 +83,28 @@ extension WeatherViewController: WeatherManagerDelegate
     }
     
     func didFailWithError(_ weatherManager: WeatherManager, _ error: Error) {
+        print(error)
+    }
+}
+
+//MARK: - CLLocationManagerDelegate
+
+extension WeatherViewController: CLLocationManagerDelegate
+{
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last
+        {
+//            locationManager.stopUpdatingLocation()
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            weatherManager.fetchWeather(latitude: lat, longitude: lon)
+            print("location changed")
+        }
+        print(locations.last)
+        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }
 }

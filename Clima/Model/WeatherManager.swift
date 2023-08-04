@@ -1,4 +1,5 @@
 import Foundation
+import CoreLocation
 
 protocol WeatherManagerDelegate
 {
@@ -16,6 +17,13 @@ struct WeatherManager
     {
         let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY")
         let urlString = "\(weatherUrl)&appid=\(apiKey!)&q=\(cityName)"
+        performRequest(with: urlString)
+    }
+    
+    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees)
+    {
+        let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY")
+        let urlString = "\(weatherUrl)&appid=\(apiKey!)&lat=\(latitude)&lon=\(longitude)"
         performRequest(with: urlString)
     }
     
