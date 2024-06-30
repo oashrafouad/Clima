@@ -13,24 +13,27 @@ struct WeatherManager
 
     let weatherUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric"
     
+    // Fetch weather using city name
     func fetchWeather(cityName: String)
     {
         let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY")
         let encodedCityName = encodeCityName(cityName)
         let urlString = "\(weatherUrl)&appid=\(apiKey!)&q=\(encodedCityName)"
+        print(urlString)
+        performRequest(with: urlString)
+    }
+    
+    // Fetch weather using GPS coordinates
+    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees)
+    {
+        let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY")
+        let urlString = "\(weatherUrl)&appid=\(apiKey!)&lat=\(latitude)&lon=\(longitude)"
         performRequest(with: urlString)
     }
     
     // Encode all spaces in the city name with ASCII of space "%20"
     func encodeCityName(_ cityName: String) -> String {
         return cityName.replacingOccurrences(of: " ", with: "%20")
-    }
-    
-    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees)
-    {
-        let apiKey = Bundle.main.object(forInfoDictionaryKey: "API_KEY")
-        let urlString = "\(weatherUrl)&appid=\(apiKey!)&lat=\(latitude)&lon=\(longitude)"
-        performRequest(with: urlString)
     }
     
     func performRequest(with urlString: String)
